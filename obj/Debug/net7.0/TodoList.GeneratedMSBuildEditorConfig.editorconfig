@@ -20,24 +20,24 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New-dotNet-Project-main/TodoList/Pages/BookList.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va0xpc3QucmF6b3I=
+[D:/New-dotNet-Project-main/TodoList/Pages/Book/BookAddEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va1xCb29rQWRkRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/New-dotNet-Project-main/TodoList/Pages/Book/BookDelete.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va1xCb29rRGVsZXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/New-dotNet-Project-main/TodoList/Pages/Book/BookList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va1xCb29rTGlzdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/New-dotNet-Project-main/TodoList/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New-dotNet-Project-main/TodoList/Pages/FetchData.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/New-dotNet-Project-main/TodoList/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/New-dotNet-Project-main/TodoList/Pages/Todo.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVG9kby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/New-dotNet-Project-main/TodoList/Shared/SurveyPrompt.razor]

@@ -1,75 +1,48 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using TodoList.Data;
 using TodoList.Models;
-using TodoList.Models.Abstract;
 
 namespace TodoList.Service;
 
-public class BookService : IBookService
+public class BookService
 {
-    private AppDbContext _db;
-    public BookService(AppDbContext db){
-        _db = db;
-    }
-    public void DeleteBook(int id, Book book)
+    public BookFilterViewModel Filter(List<Book>? source, string? searchString,
+                                        int? userID, string? name, 
+                                        string? author, string? genre )
     {
-       try{
-        var obj = _db.Books.Find(id);
-        _db.Books.Remove(obj);
-        _db.SaveChanges();
-       }
-       catch{
-        throw;
-       }
-    }
+        var obj = from m in source select m;
 
-    public IEnumerable<Book> GetBooks()
-    {
-        try{
-            return _db.Books.ToList();
-        }
-        catch{
-            throw;
-        }
-    }
+        var userIDQuery = from m in source orderby m.UserID select m.UserID;
+        var nameQuery = from m in source orderby m.Name select m.Name;
+        var authorQuery = from m in source orderby m.Author select m.Author;
+        var genreQuery = from m in source orderby m.Genre select m.Genre;
 
-    public void InsertBook(Book book)
-    {
-        try{
-            _db.Books.Add(book);
-            _db.SaveChanges();
-        }
-        catch{
-            throw;
-        }
-    }
+        if(!String.IsNullOrEmpty(searchString))
+            {
+                obj = obj.Where(m => 
+                m.Name!.Contains(searchString) || 
+                m.Author!.Contains(searchString) ||
+                m.Description!.Contains(searchString) ||
+                m.Genre!.Contains(searchString) ||
+                m.UserID.ToString()!.Contains(searchString)
+                );
+            }
+        if(userID != null)
+            obj = obj.Where(m => m.UserID == userID);
+        if(name != null)
+            obj = obj.Where(m => m.Name == name);
+        if(author != null)
+            obj = obj.Where(m => m.Author == author);
+        if(genre != null)
+            obj = obj.Where(m => m.Genre == genre);
 
-    public Book SingleBook(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void UpdateBook(int id, Book book)
-    {
-        try{
-            var oldBook = _db.Books.Find(id);
-            if(oldBook == null)
-            throw new NullReferenceException();
-
-            var newbook = new Book{
-               Id = oldBook.Id,
-               UserID = book.UserID,
-               Name = book.Name,
-               Author = book.Author,
-               Description = book.Description,
-               Genre = book.Genre,
-               CreatedDate = DateTime.UtcNow
-            };
-
-            _db.Books.Update(newbook);
-            _db.SaveChanges();
-        }
-        catch{
-            throw;
-        }
+        return new BookFilterViewModel{
+            UserIDs = userIDQuery.Distinct().ToList(),
+            Names = nameQuery.Distinct().ToList(),
+            Authors = authorQuery.Distinct().ToList(),
+            Genres = genreQuery.Distinct().ToList(),
+            Books = obj.ToList()
+        };
     }
 }

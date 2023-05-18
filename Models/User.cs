@@ -20,4 +20,5 @@ public class User
     public string? Password {get; set;}
     [DisplayName("Created Date")]
     public DateTime? CreatedDate { get; set; } = DateTime.Now;
+    public IEnumerable<Book> Books { get; set; }
 }

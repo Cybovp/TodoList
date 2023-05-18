@@ -1,0 +1,130 @@
+@page "/booklist"
+<div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="input-group col">
+        <input type="text" class="form-control" placeholder="Search book by keyword" @bind="SearchString"/>
+        <button @onclick="FilterBook">Search</button>
+    </div>
+</div>
+    <button @onclick="showfilter">Show/Hide Filter</button>
+    <button @onclick="Reset">Reset Search and Filter</button>
+    <div class="row">
+        <div class="col-8" style="display: block;" hidden="@isVisible" > 
+            <fieldset class="border pt-3 pb-3 mt-3 mb-3 border-3">
+                <label> &nbsp; User ID: &nbsp;&nbsp;</label><select @bind="userIDFilter" >
+                    <option value="">All</option>
+                    @foreach (var item in viewModel.UserIDs)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <label> &nbsp; Name: &nbsp;&nbsp;</label><select @bind="nameFilter">
+                    <option value="">All</option>
+                    @foreach (var item in viewModel.Names)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <label> &nbsp; Author: &nbsp;&nbsp;</label><select @bind="authorFilter">
+                    <option value="">All</option>
+                    @foreach (var item in viewModel.Authors)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <label> &nbsp; Genre: &nbsp;&nbsp;</label><select @bind="genreFilter">
+                    <option value="">All</option>
+                    @foreach (var item in viewModel.Genres)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <button @onclick="FilterBook">Filter</button>
+            </fieldset>
+        </div>
+    </div>
+<div class ="row pt-1">
+    <div class="col-6">
+    </div>
+    <div class="col-6 text-end">
+        <a href='/book/add' class="btn btn-primary text-end" role="button">
+            <i class="fas fa-user-plus"></i>
+            Add User
+        </a>
+    </div>
+</div>
+<table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Description</th>
+                <th>Genre</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in viewModel.Books)
+            {
+                <tr>
+                    <td>@book.UserID</td>
+                    <td>@book.Name</td>
+                    <td>@book.Author</td>
+                    <td>@book.Description</td>
+                    <td>@book.Genre</td>
+                    <td>
+                        <a href='/book/edit/@book.Id' class="btn btn-outline-dark" role="button">Edit</a>
+                    </td>
+                    <td>
+                        <a href='/book/delete/@book.Id' class="btn btn-outline-danger" role="button">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+@code {
+    HttpClient httpClient = new HttpClient();
+    protected BookService service = new BookService();
+    protected BookFilterViewModel viewModel = new BookFilterViewModel();
+    protected List<Book>? BookLists {get;set;} = new();
+    protected string SearchString { get; set; } = string.Empty;
+    private string baseurl = "http://localhost:5273/api/book";
+
+    private int? userIDFilter {get; set; }
+    private string? nameFilter {get; set; }
+    private string? authorFilter {get; set; }
+    private string? genreFilter {get; set; }
+
+    private bool isVisible {get; set;} = true;
+    protected override async Task OnInitializedAsync()
+    {
+        await GetBook();
+        FilterBook();
+    }
+    protected async Task GetBook()
+    {
+        BookLists = await httpClient.GetFromJsonAsync<List<Book>>(baseurl);
+    }
+    protected void FilterBook(){
+        viewModel = service.Filter(BookLists,SearchString,userIDFilter,nameFilter,authorFilter,genreFilter);
+    }
+    protected void Reset()
+    {
+        SearchString = null;
+        userIDFilter = null;
+        nameFilter = null;
+        authorFilter = null;
+        genreFilter = null;
+        viewModel.Books = BookLists;
+    }
+    protected void showfilter(){
+        if (isVisible == true)
+            isVisible = false;
+        else
+            isVisible = true;
+    }
+
+}

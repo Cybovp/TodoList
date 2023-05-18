@@ -12,7 +12,7 @@ public class Book
     public int Id { get; set; }
     [Required]
     [DisplayName("User ID")]
-    public int UserID { get; set; }
+    public int? UserID { get; set; }
     [Required]
     [DisplayName("Name")]
     public string? Name { get; set; }
@@ -27,4 +27,5 @@ public class Book
     public string? Genre { get; set; }
     [DisplayName("Created Date")]
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public User? user {get; set; }
 }
